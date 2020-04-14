@@ -1,11 +1,40 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
-
-import './index.less'
-import Welcome from '../../components/welcome/welcome';
+import { AtFab } from 'taro-ui'
+import Card from '../../components/card'
 
 export default class Index extends Component {
+
+  state = {
+    list: [
+      {
+        id: 1,
+        title: '测试标题-01',
+        note: '简介',
+        totalReturnRate: 123.23,
+        yearReturnRate: 83.23,
+        maxDrawDownRate: 23.23
+      },
+
+      {
+        id: 2,
+        title: '测试标题-02',
+        note: '简介',
+        totalReturnRate: 123.23,
+        yearReturnRate: 83.23,
+        maxDrawDownRate: 23.23
+      },
+
+      {
+        id: 3,
+        title: '测试标题-03',
+        note: '简介',
+        totalReturnRate: 123.23,
+        yearReturnRate: 83.23,
+        maxDrawDownRate: 23.23
+      }
+    ]
+  }
 
   componentWillMount () { }
 
@@ -17,28 +46,69 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: '首页'
+  handleCardClick (id, e) {
+    console.log(id)
+    Taro.navigateTo({
+      url: `/pages/info/info?id=${id}`
+    })
   }
 
-  name: string = 'react框架'
-
-  age: number = 10
+  handleToEdit (e) {
+    Taro.navigateTo({
+      url: `/pages/edit/edit`
+    })
+  }
 
   render () {
+    const cards = this.state.list.map(item => {
+      return (
+        <View
+          key={item.id}
+          onClick={this.handleCardClick.bind(this, item.id)}
+        >
+          <Card
+            title={item.title}
+          >
+            <View>
+              <Text>{item.note}</Text>
+            </View>
+            <View className='at-row' >
+              <View className='at-col' >
+                <Text>累计收益</Text>
+                <Text>{item.totalReturnRate}%</Text>
+              </View>
+
+              <View className='at-col' >
+                <Text>年化收益</Text>
+                <Text>{item.yearReturnRate}%</Text>
+              </View>
+
+              <View className='at-col' >
+                <Text>最大回撤</Text>
+                <Text>{item.maxDrawDownRate}%</Text>
+              </View>
+            </View>
+          </Card>
+        </View>
+      )
+    })
+
     return (
       <View className='index'>
-        <AtButton>测试taro-ui button</AtButton>
+        <View className='at-row' >
+          <View className='at-col' >
+            <Text>策略列表</Text>
+          </View>
+        </View>
+        <View>
+          {cards}
+        </View>
 
-        <Text>Hello world!</Text>
-        <Welcome name={this.name} age={this.age} ></Welcome>
+        <View className='float-window' >
+          <AtFab size='normal' onClick={this.handleToEdit.bind(this)}>
+            <Text className='at-fab__icon at-icon at-icon-add' ></Text>
+          </AtFab>
+        </View>
       </View>
     )
   }
