@@ -1,50 +1,63 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtFab } from 'taro-ui'
-import Card from '../../components/card'
+// import { AtFab, AtTag } from 'taro-ui'
+// import Card from '../../components/card'
+// import Chart from '../../components/chart'
+import BacktestInfo from '../../components/backtest-info'
+
+// import { API_GET_BACKTEST_LIST } from '../../constants/api'
+
+// import BacktestInfoXHR from '../../types/backtest.d'
 
 export default class Index extends Component {
 
-  state = {
-    list: [
-      {
-        id: 1,
-        title: '测试标题-01',
-        note: '简介',
-        totalReturnRate: 123.23,
-        yearReturnRate: 83.23,
-        maxDrawDownRate: 23.23
-      },
-
-      {
-        id: 2,
-        title: '测试标题-02',
-        note: '简介',
-        totalReturnRate: 123.23,
-        yearReturnRate: 83.23,
-        maxDrawDownRate: 23.23
-      },
-
-      {
-        id: 3,
-        title: '测试标题-03',
-        note: '简介',
-        totalReturnRate: 123.23,
-        yearReturnRate: 83.23,
-        maxDrawDownRate: 23.23
-      }
-    ]
+  constructor (props) {
+    super(props)
+    console.log('index constructor')
+    console.log(this.props)
   }
 
-  componentWillMount () { }
+  state = {
+    // list: [],
+    item: {}
+  }
 
-  componentDidMount () { }
+  componentWillMount () {
+    console.log('index componentWillMount')
+  }
 
-  componentWillUnmount () { }
+  componentDidMount () {
+    console.log('index componentDidMount')
+    this.handleGetBacktestList()
+  }
+
+  componentWillUnmount () {}
 
   componentDidShow () { }
 
   componentDidHide () { }
+
+  handleGetBacktestList () {
+    // fetch(API_GET_BACKTEST_LIST)
+    // .then(res => res.json())
+    // .then((res: BacktestInfo) => {
+
+    //   if (res.status) {
+    //     this.setState({
+    //       list: res.data
+    //     })
+    //   }
+    // })
+    const res: any = {"status":true,"data":[{"id":1,"tags":["天其","省示维","每与识从"],"title":"部示中原着需须","node":"争度物造段值压动等层直变议。","returns":[{"time":0,"value":67.35},{"time":1,"value":56.87},{"time":2,"value":57.47},{"time":3,"value":66.48},{"time":4,"value":100.12}],"totalReturnRate":-58.65,"yearReturnRate":107.92,"maxDrawDownRate":22.77}]}
+
+    if (res.status) {
+      this.setState({
+        item: res.data[0]
+      })
+      console.log('setState')
+    }
+  }
 
   handleCardClick (id, e) {
     console.log(id)
@@ -60,48 +73,26 @@ export default class Index extends Component {
   }
 
   render () {
-    const cards = this.state.list.map(item => {
-      return (
-        <View
-          key={item.id}
-          onClick={this.handleCardClick.bind(this, item.id)}
-        >
-          <Card
-            title={item.title}
-          >
-            <View>
-              <Text>{item.note}</Text>
-            </View>
-            <View className='at-row' >
-              <View className='at-col' >
-                <Text>累计收益</Text>
-                <Text>{item.totalReturnRate}%</Text>
-              </View>
+    console.log('index render')
+    // const cards = this.state.list.map((item: any) => {
+    //   return (
+    //     <BacktestInfo key={item.id} info={item} ></BacktestInfo>
+    //   )
+    // })
 
-              <View className='at-col' >
-                <Text>年化收益</Text>
-                <Text>{item.yearReturnRate}%</Text>
-              </View>
-
-              <View className='at-col' >
-                <Text>最大回撤</Text>
-                <Text>{item.maxDrawDownRate}%</Text>
-              </View>
-            </View>
-          </Card>
-        </View>
-      )
-    })
+    console.log('index render')
 
     return (
       <View className='index'>
+        Hello World
         <View className='at-row' >
           <View className='at-col' >
             <Text>策略列表</Text>
           </View>
         </View>
         <View>
-          {cards}
+          {/* {cards} */}
+          <BacktestInfo info={this.state.item} ></BacktestInfo>
         </View>
 
         <View className='float-window' >

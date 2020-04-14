@@ -3,21 +3,11 @@ import { View } from '@tarojs/components'
 
 import F2 from '../components/f2-canvas/lib/f2';
 
+import { ChartProps } from '../types/chart.d'
+
 function initChart(canvas, width, height) {
-  console.log('initChart')
-  console.log('canvas', canvas)
-  console.log('width', width)
-  console.log('height', height)
-  const data = [
-    { year: '1951 年', sales: 38 },
-    { year: '1952 年', sales: 52 },
-    { year: '1956 年', sales: 61 },
-    { year: '1957 年', sales: 145 },
-    { year: '1958 年', sales: 48 },
-    { year: '1959 年', sales: 38 },
-    { year: '1960 年', sales: 38 },
-    { year: '1962 年', sales: 38 },
-  ];
+  const data = this.state.returns
+
   const chart = new F2.Chart({
     el: canvas,
     width,
@@ -39,23 +29,36 @@ function initChart(canvas, width, height) {
     }
   });
 
-  chart.area().position('year*sales')
-  chart.line().position('year*sales')
+  chart.area().position('time*value')
+  chart.line().position('time*value')
   chart.render();
   return chart;
 }
 
-export default class Chart extends Component {
+export default class Chart extends Component<ChartProps> {
+
+  constructor (props) {
+    super(props)
+    console.log('chart constructor')
+    console.log(this.props)
+  }
 
   state = {
     opts: {
-      onInit: initChart
+      onInit: initChart.bind(this)
     }
   }
 
-  componentWillMount() {
-    console.log(this)
+  componentDidMount() {
+    console.log('chart componentDidMount')
+    this.setState({
+      returns: this.props.returns
+    })
   }
+
+  // componentDidUpdate () {
+
+  // }
 
   static options = {
     addGlobalClass: true
@@ -67,12 +70,54 @@ export default class Chart extends Component {
     }
   }
 
+  // hello () {
+  //   console.log('hello')
+
+  //   return {
+  //     onInit: function () {
+  //       console.log('onInit')
+  //     }
+  //   }
+  // }
+
+  // initChart(canvas, width, height) {
+  //   const data = _self.state.returns
+  //   console.log(data)
+
+  //   const chart = new F2.Chart({
+  //     el: canvas,
+  //     width,
+  //     height
+  //   });
+
+  //   chart.source(data, {
+  //     sales: {
+  //       tickCount: 5
+  //     }
+  //   });
+  //   chart.tooltip({
+  //     showItemMarker: false,
+  //     onShow(ev) {
+  //       const { items } = ev;
+  //       items[0].name = null;
+  //       items[0].name = items[0].title;
+  //       items[0].value = '¥ ' + items[0].value;
+  //     }
+  //   });
+
+  //   chart.area().position('time*value')
+  //   chart.line().position('time*value')
+  //   chart.render();
+  //   return chart;
+  // }
+
   render () {
+    console.log('chart render')
     return (
-      <View className='hello' >
+      <View className='chart' >
         <ff-canvas
-          id="column-dom"
-          canvas-id="column"
+          id='column-dom'
+          canvas-id='column'
           opts={this.state.opts}
         ></ff-canvas>
       </View>
