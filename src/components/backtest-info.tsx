@@ -10,8 +10,8 @@ export default class BacktestInfo extends Component<any> {
 
   constructor (props) {
     super(props)
-    console.log('backtestInfo constructor')
-    console.log(this.props)
+    // console.log('backtestInfo constructor')
+    // console.log(this.props)
   }
 
   state = {
@@ -25,10 +25,16 @@ export default class BacktestInfo extends Component<any> {
     maxDrawDownRate: 0
   }
 
-  componentDidMount () {
-    console.log('backtest-info componentWillMount')
+  componentWillMount () {
+    // console.log('backtest-info componentWillMount', this.props.info)
     this.setState(this.props.info)
-    console.log(this.props)
+    // console.log(this.props)
+    // this.setState(this.props.info)
+    // console.log(this.props)
+  }
+
+  componentDidMount () {
+    // console.log('backtest-info componentDidMount')
   }
 
   handleCardClick (id, e) {
@@ -43,12 +49,9 @@ export default class BacktestInfo extends Component<any> {
   }
 
   render () {
-    console.log('backtest-info render')
+    // console.log('backtest-info render')
     return (
-      <View
-        key={this.state.id}
-        onClick={this.handleCardClick.bind(this, this.state.id)}
-      >
+      <View>
         <Card
           title={this.state.title}
         >

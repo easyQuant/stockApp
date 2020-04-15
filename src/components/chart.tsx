@@ -39,8 +39,8 @@ export default class Chart extends Component<ChartProps> {
 
   constructor (props) {
     super(props)
-    console.log('chart constructor')
-    console.log(this.props)
+    // console.log('chart constructor', this.props)
+    // console.log(this.props)
   }
 
   state = {
@@ -50,7 +50,7 @@ export default class Chart extends Component<ChartProps> {
   }
 
   componentDidMount() {
-    console.log('chart componentDidMount')
+    // console.log('chart componentDidMount')
     this.setState({
       returns: this.props.returns
     })
@@ -70,49 +70,8 @@ export default class Chart extends Component<ChartProps> {
     }
   }
 
-  // hello () {
-  //   console.log('hello')
-
-  //   return {
-  //     onInit: function () {
-  //       console.log('onInit')
-  //     }
-  //   }
-  // }
-
-  // initChart(canvas, width, height) {
-  //   const data = _self.state.returns
-  //   console.log(data)
-
-  //   const chart = new F2.Chart({
-  //     el: canvas,
-  //     width,
-  //     height
-  //   });
-
-  //   chart.source(data, {
-  //     sales: {
-  //       tickCount: 5
-  //     }
-  //   });
-  //   chart.tooltip({
-  //     showItemMarker: false,
-  //     onShow(ev) {
-  //       const { items } = ev;
-  //       items[0].name = null;
-  //       items[0].name = items[0].title;
-  //       items[0].value = '¥ ' + items[0].value;
-  //     }
-  //   });
-
-  //   chart.area().position('time*value')
-  //   chart.line().position('time*value')
-  //   chart.render();
-  //   return chart;
-  // }
-
   render () {
-    console.log('chart render')
+    // console.log('chart render')
     return (
       <View className='chart' >
         <ff-canvas
