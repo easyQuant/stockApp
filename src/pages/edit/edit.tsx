@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Text } from '@tarojs/components';
+import moment from 'moment'
 
 // 引入taro-ui 组件
 import { AtTextarea, AtButton, AtFloatLayout, AtCalendar } from 'taro-ui'
@@ -16,15 +17,16 @@ export default class Edit extends Component {
     filterTextValue: '',
     tradeTextValue: '',
     startDate: '2020-01-01',
-    endDate: '2020-04-01',
+    endDate: moment().add(-1, 'days').format('YYYY-MM-DD'),
     isStartDateLayoutOpened: false,
     isEndDateLayoutOpened: false,
-    minDate: '2017-01-01'
+    minDate: '2017-01-01',
+    maxDate: moment().add(-1, 'days').format('YYYY-MM-DD')
   }
 
   handleToggleOpened (isStart, event) {
 
-    if (isStart) {
+    if (typeof isStart !== 'object') {
       this.setState({
         isStartDateLayoutOpened: true
       })
@@ -35,17 +37,11 @@ export default class Edit extends Component {
     }
   }
 
-  handleClose (isStart, event) {
-
-    if (isStart) {
-      this.setState({
-        isStartDateLayoutOpened: false
-      })
-    } else {
-      this.setState({
-        isEndDateLayoutOpened: false
-      })
-    }
+  handleClose () {
+    this.setState({
+      isStartDateLayoutOpened: false,
+      isEndDateLayoutOpened: false
+    })
   }
 
   /**
@@ -65,7 +61,6 @@ export default class Edit extends Component {
    * @param value 策略的则时语句
    */
   handleTradeChange (value, event) {
-    console.log('handleTradeChange')
     this.setState({
       tradeTextValue: value
     })
@@ -76,20 +71,12 @@ export default class Edit extends Component {
    * 监听回测开始日期的改变
    * @param value 回测开始日期
    */
-  onDateChange (isStart, event) {
+  onStartDateChange (event) {
     console.log('onDateChange')
     console.log('event', event)
-    console.log('isStart', isStart)
-
-    if (isStart) {
-      this.setState({
-        startDate: event.value
-      })
-    } else {
-      this.setState({
-        endDate: event.value
-      })
-    }
+    this.setState({
+      startDate: event.value
+    })
   }
 
   /**
@@ -108,11 +95,29 @@ export default class Edit extends Component {
    * 创建策略
    */
   handleBuildAlgorithm (e) {
-    console.log('创建策略')
-    console.log(this.state)
-    Taro.navigateTo({
-      url: '/pages/info/info?id=3'
-    })
+
+    // 请求数据
+    let req = {
+      filterTextValue: this.state.filterTextValue,
+      tradeTextValue: this.state.tradeTextValue,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
+    }
+
+    // 响应数据
+    let res = {
+      status: true,
+      data: {}
+    }
+
+    if (res.status) {
+      Taro.navigateTo({
+        url: '/pages/info/info?id=3'
+      })
+    }
+
+    console.log('请求数据 ', req)
+    console.log('响应数据 ', res)
   }
 
   config: Config = {
@@ -171,12 +176,13 @@ export default class Edit extends Component {
         <AtFloatLayout
           isOpened={this.state.isStartDateLayoutOpened}
           title='选择开始日期'
-          onClose={this.handleClose.bind(this, true)}
+          onClose={this.handleClose.bind(this)}
         >
           <AtCalendar
             minDate={this.state.minDate}
+            maxDate={this.state.maxDate}
             currentDate={this.state.startDate}
-            onDayClick={this.onDateChange.bind(this, true)}
+            onDayClick={this.onStartDateChange.bind(this)}
           />
         </AtFloatLayout>
 
@@ -187,8 +193,9 @@ export default class Edit extends Component {
         >
           <AtCalendar
             minDate={this.state.minDate}
+            maxDate={this.state.maxDate}
             currentDate={this.state.endDate}
-            onDayClick={this.onDateChange.bind(this)}
+            onDayClick={this.onEndDateChange.bind(this)}
           />
         </AtFloatLayout>
       </View>

@@ -22,9 +22,9 @@ export default class Index extends Component {
   }
 
   handleToEdit () {
-    // Taro.navigateTo({
-    //   url: `/pages/edit/edit`
-    // })
+    Taro.navigateTo({
+      url: `/pages/edit/edit`
+    })
   }
 
   render () {
